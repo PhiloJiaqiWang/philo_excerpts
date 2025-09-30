@@ -1,0 +1,8 @@
+{
+  "books": [
+    { "id": "b-orwell-1984", "title": "1984", "author": "George Orwell" }
+  ],
+  "notes": [
+    { "id": "n1", "bookId": "b-orwell-1984", "text": "testts", "tags": ["政治","自由"], "createdAt": "2021-05-02T12:00:00Z", "source": "p.84" }
+  ]
+}
