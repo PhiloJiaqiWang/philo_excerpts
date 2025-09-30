@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的摘记 My Excerpts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #121620;
+      --muted: #7c8799;
+      --text: #e8eef8;
+      --brand: #7aa2ff;
+      --accent: #63e6be;
+      --danger: #ff6b6b;
+      --border: #1f2633;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial; background: linear-gradient(180deg, #0b0d12, #0b0d12 60%, #0e1420); color: var(--text); }
+    .app { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
+    aside { background: linear-gradient(180deg, #0f1420, #0c1018); border-right: 1px solid var(--border); padding: 14px 12px; overflow: auto; }
+    main { display: grid; grid-template-rows: auto 1fr; }
+    header { display:flex; gap: 12px; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); background: rgba(18,22,32,0.6); backdrop-filter: blur(6px); position: sticky; top:0; z-index: 1; }
+    .title { font-weight: 800; letter-spacing: 0.2px; }
+    .brand { color: var(--brand); }
+    .toolbar { margin-left: auto; display:flex; gap: 8px; }
+    .btn { border: 1px solid var(--border); background: #141a26; color: var(--text); padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: .15s ease; }
+    .btn:hover { transform: translateY(-1px); border-color: #2a3345; }
+    .btn.primary { background: linear-gradient(180deg, #1a2333, #151e2b); border-color: #2b3952; }
+    .btn.ghost { background: transparent; }
+    .danger { color: var(--danger); }
+
+    .searchbar { display: grid; grid-template-columns: 1fr 160px 140px; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: #0f141f; }
+    input, select, textarea { background: #0e1320; border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 10px 12px; outline: none; }
+    input::placeholder, textarea::placeholder { color: #6b778d; }
+
+    .lists { display: grid; grid-template-columns: 1fr; height: 100%; overflow: hidden; }
+    .content { overflow: auto; padding: 10px 18px 40px; }
+
+    .book-card { border: 1px solid var(--border); background: #0f1420; padding: 8px; margin: 6px 0; border-radius: 12px; cursor: pointer; transition: .15s ease; }
+    .book-card:hover { border-color: #263149; }
+    .book-card.active { outline: 2px solid var(--brand); }
+    .book-title { font-weight: 700; }
+    .muted { color: var(--muted); font-size: 12px; }
+
+    .note { border: 1px solid var(--border); background: linear-gradient(180deg,#111828, #121829); padding: 14px; margin: 10px 0; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+    .note-head { display:flex; align-items:center; gap: 10px; margin-bottom: 8px; }
+    .tag { font-size: 12px; padding: 3px 8px; border:1px solid #2a3347; border-radius: 999px; color: #a9b6d1; }
+    .tags { display:flex; flex-wrap: wrap; gap: 6px; }
+    .note-meta { font-size: 12px; color: var(--muted); }
+    .note-text { line-height: 1.6; white-space: pre-wrap; }
+
+    .section-title { margin: 14px 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: #9fb2d9; }
+
+    .book-count { background: #131a29; border: 1px solid var(--border); padding: 6px 8px; border-radius: 10px; font-size: 12px; margin-left:auto; color:#9fb2d9 }
+
+    .divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+    .empty { color: #93a0ba; text-align: center; margin-top: 40px; }
+
+    .footer { text-align: center; color: var(--muted); font-size: 12px; padding: 12px; }
+
+    /* Modal */
+    dialog { border: 1px solid var(--border); background: #0f1420; color: var(--text); border-radius: 14px; width: min(720px, 92vw); }
+    dialog::backdrop { background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
+    .modal-head { display:flex; align-items:center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .modal-body { padding: 14px; display: grid; gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .row { display:flex; gap: 10px; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="section-title">书目 Books</div>
+      <div id="bookList"></div>
+      <div class="divider"></div>
+      <div class="section-title">数据 Data</div>
+      <div class="row">
+        <button class="btn" id="btnImport">导入JSON</button>
+        <button class="btn" id="btnExport">导出JSON</button>
+      </div>
+      <p class="muted" style="margin-top:8px">静态站点无法直接写文件：新增/编辑将存入浏览器 LocalStorage，并可“导出JSON”下载后覆盖服务器上的 <code>notes.json</code>。</p>
+      <div class="divider"></div>
+      <div class="section-title">快捷视图</div>
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn ghost" data-view="all">全部</button>
+        <button class="btn ghost" data-view="recent">最近7天</button>
+        <button class="btn ghost" data-view="month">本月</button>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <div class="title">📚 我的摘记 <span class="brand">My Excerpts</span></div>
+        <div class="toolbar">
+          <button class="btn primary" id="btnNew">➕ 新增摘记</button>
+          <button class="btn" id="btnNewBook">📘 新增书目</button>
+        </div>
+      </header>
+
+      <div class="searchbar">
+        <input id="q" placeholder="搜索：内容 / 标签 / 书名 / 作者... (支持 #标签)" />
+        <select id="sort">
+          <option value="newest">按时间：最新→最旧</option>
+          <option value="oldest">按时间：最旧→最新</option>
+        </select>
+        <select id="group">
+          <option value="none">分组：无</option>
+          <option value="date">分组：日期</option>
+          <option value="book">分组：书名</option>
+        </select>
+      </div>
+
+      <div class="lists">
+        <div class="content" id="content"></div>
+      </div>
+      <div class="footer">轻量 JSON 驱动 · 可搜索 · 可按书浏览 · 时间记录 · 本地新增/导出</div>
+    </main>
+  </div>
+
+  <!-- 新增摘记 Modal -->
+  <dialog id="dlgNote">
+    <div class="modal-head">
+      <div>新增摘记</div>
+      <button class="btn" onclick="dlgNote.close()">关闭</button>
+    </div>
+    <form class="modal-body" method="dialog">
+      <div class="grid-2">
+        <div>
+          <label>所属书目</label>
+          <select id="formNoteBook"></select>
+        </div>
+        <div>
+          <label>页码/来源 (可选)</label>
+          <input id="formSource" placeholder="如 p.123 / 章节名" />
+        </div>
+      </div>
+      <div>
+        <label>内容</label>
+        <textarea id="formText" rows="6" placeholder="粘贴你的摘记内容..."></textarea>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label>标签 (逗号分隔)</label>
+          <input id="formTags" placeholder="哲学, 记忆, 方法" />
+        </div>
+        <div>
+          <label>时间 (默认现在)</label>
+          <input id="formTime" type="datetime-local" />
+        </div>
+      </div>
+      <div class="row" style="justify-content: flex-end;">
+        <button class="btn" value="cancel">取消</button>
+        <button class="btn primary" id="formSubmit" value="default">保存到本地</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 新增书目 Modal -->
+  <dialog id="dlgBook">
+    <div class="modal-head">
+      <div>新增书目</div>
+      <button class="btn" onclick="dlgBook.close()">关闭</button>
+    </div>
+    <form class="modal-body" method="dialog">
+      <div class="grid-2">
+        <div>
+          <label>书名</label>
+          <input id="formBookTitle" placeholder="书名" />
+        </div>
+        <div>
+          <label>作者 (可选)</label>
+          <input id="formBookAuthor" placeholder="作者" />
+        </div>
+      </div>
+      <div class="row" style="justify-content: flex-end;">
+        <button class="btn" value="cancel">取消</button>
+        <button class="btn primary" id="formBookSubmit" value="default">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+  // =============== 轻量 JSON“数据库”结构 ===============
+  // books: [{id, title, author}]
+  // notes: [{id, bookId, text, tags:[...], createdAt: ISO, source}]
+  // 生产部署建议将数据放在 /notes.json 并由 fetch 读取；
+  // 纯静态站点写入通过 LocalStorage 暂存 + 导出 JSON 合并。
+
+  const SAMPLE_DATA = {
+    books: [
+      { id: "b-orwell-1984", title: "1984", author: "George Orwell" },
+      { id: "b-saracevic-2007", title: "Relevance (Part II)", author: "Tefko Saracevic" },
+      { id: "b-nelson-1990", title: "Metamemory: A Theoretical Framework", author: "Nelson" }
+    ],
+    notes: [
+      { id: "n1", bookId: "b-orwell-1984", text: "自由就是能够说二加二等于四的自由。", tags: ["政治", "自由"], createdAt: "2021-05-02T12:00:00Z", source: "p.84" },
+      { id: "n2", bookId: "b-saracevic-2007", text: "相关性的本质在于情境：用户、任务与时间维度共同决定。", tags: ["Information Science", "Relevance"], createdAt: "2023-11-12T09:30:00Z", source: "Section 3" },
+      { id: "n3", bookId: "b-nelson-1990", text: "Feeling of Knowing 并非正确性的保证，而是可达性的估计。", tags: ["Memory", "FoK"], createdAt: new Date().toISOString(), source: "" }
+    ]
+  }
+
+  // ------- 状态 -------
+  let state = { data: { books:[], notes:[] }, filter: { bookId:null, q:"", sort:"newest", group:"none", view:"all" } }
+
+  // ------- 初始化：优先 fetch notes.json，其次 LocalStorage，最后 SAMPLE_DATA -------
+  async function loadData() {
+    const local = localStorage.getItem("my-excerpts-pending")
+    let pending = local ? JSON.parse(local) : { books: [], notes: [] }
+
+    try {
+      const resp = await fetch("notes.json", { cache: "no-store" })
+      if (!resp.ok) throw new Error("no notes.json")
+      const server = await resp.json()
+      state.data.books = mergeById(server.books || [], pending.books)
+      state.data.notes = mergeById(server.notes || [], pending.notes)
+    } catch (e) {
+      // 没有 notes.json 就用 SAMPLE 填充
+      const server = SAMPLE_DATA
+      state.data.books = mergeById(server.books || [], pending.books)
+      state.data.notes = mergeById(server.notes || [], pending.notes)
+    }
+  }
+
+  function mergeById(baseArr, addArr) {
+    const map = new Map(baseArr.map(x => [x.id, x]))
+    for (const item of addArr || []) map.set(item.id, item)
+    return [...map.values()]
+  }
+
+  // ------- 渲染 -------
+  function renderBooks() {
+    const root = document.getElementById('bookList')
+    root.innerHTML = ''
+    const booksSorted = [...state.data.books].sort((a,b)=>a.title.localeCompare(b.title))
+    for (const b of booksSorted) {
+      const count = state.data.notes.filter(n=>n.bookId===b.id).length
+      const el = document.createElement('div')
+      el.className = 'book-card' + (state.filter.bookId===b.id?' active':'')
+      el.innerHTML = `<div class="row"><div class="book-title">${escapeHTML(b.title)}</div><div class="book-count">${count}</div></div><div class="muted">${escapeHTML(b.author||'')}</div>`
+      el.onclick = ()=>{ state.filter.bookId = (state.filter.bookId===b.id? null : b.id); updateURLHash(); renderAll() }
+      root.appendChild(el)
+    }
+  }
+
+  function renderNotes() {
+    const content = document.getElementById('content')
+    const { q, bookId, sort, group, view } = state.filter
+
+    const qTrim = (q||'').trim()
+    const qTags = (qTrim.match(/#[^\s#]+/g)||[]).map(t=>t.slice(1).toLowerCase())
+    const qPlain = qTrim.replace(/#[^\s#]+/g,'').toLowerCase()
+
+    // 过滤
+    let notes = state.data.notes
+      .filter(n => !bookId || n.bookId === bookId)
+      .filter(n => {
+        if (!qTrim) return true
+        const book = state.data.books.find(b=>b.id===n.bookId)
+        const hay = [n.text, (n.tags||[]).join(' '), book?.title, book?.author, n.source].join(' ').toLowerCase()
+        const matchPlain = qPlain ? hay.includes(qPlain) : true
+        const matchTags = qTags.length ? qTags.every(t => (n.tags||[]).map(x=>x.toLowerCase()).includes(t)) : true
+        return matchPlain && matchTags
+      })
+
+    // 快捷时间视图
+    const now = new Date()
+    notes = notes.filter(n => {
+      if (view === 'recent') return (now - new Date(n.createdAt)) <= 7*24*3600*1000
+      if (view === 'month') {
+        const d = new Date(n.createdAt)
+        return d.getUTCFullYear() === now.getUTCFullYear() && d.getUTCMonth() === now.getUTCMonth()
+      }
+      return true
+    })
+
+    // 排序
+    notes.sort((a,b)=> sort==='newest' ? (new Date(b.createdAt) - new Date(a.createdAt)) : (new Date(a.createdAt) - new Date(b.createdAt)))
+
+    // 分组
+    let groups = [{ key: 'all', items: notes }]
+    if (group === 'date') {
+      const map = new Map()
+      for (const n of notes) {
+        const d = new Date(n.createdAt)
+        const key = d.toISOString().slice(0,10)
+        if (!map.has(key)) map.set(key, [])
+        map.get(key).push(n)
+      }
+      groups = [...map.entries()].sort((a,b)=> group==='date' && state.filter.sort==='newest' ? (a[0]<b[0]?1:-1) : (a[0]>b[0]?1:-1)).map(([k,v])=>({key:k, items:v}))
+    }
+    if (group === 'book') {
+      const map = new Map()
+      for (const n of notes) {
+        const b = state.data.books.find(x=>x.id===n.bookId)
+        const key = b ? `${b.title}` : n.bookId
+        if (!map.has(key)) map.set(key, [])
+        map.get(key).push(n)
+      }
+      groups = [...map.entries()].sort((a,b)=> a[0].localeCompare(b[0])).map(([k,v])=>({key:k, items:v}))
+    }
+
+    content.innerHTML = ''
+
+    if (!notes.length) {
+      content.innerHTML = `<div class="empty">没有匹配的摘记。试试更换筛选或添加新内容～</div>`
+      return
+    }
+
+    for (const g of groups) {
+      if (group !== 'none') {
+        const h = document.createElement('div')
+        h.className = 'section-title'
+        h.textContent = g.key
+        content.appendChild(h)
+      }
+      for (const n of g.items) content.appendChild(renderNote(n))
+    }
+  }
+
+  function renderNote(n) {
+    const el = document.createElement('div')
+    const book = state.data.books.find(b=>b.id===n.bookId)
+    const date = new Date(n.createdAt)
+    const fmt = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`
+    el.className = 'note'
+    el.innerHTML = `
+      <div class="note-head">
+        <div class="tag">${escapeHTML(book?.title||'未知书目')}</div>
+        ${n.source? `<div class="tag">${escapeHTML(n.source)}</div>`:''}
+        <div class="note-meta">· ${fmt}</div>
+      </div>
+      <div class="note-text">${escapeHTML(n.text)}</div>
+      ${(n.tags&&n.tags.length)? `<div class="tags" style="margin-top:8px">${n.tags.map(t=>`<span class='tag'>#${escapeHTML(t)}</span>`).join(' ')}</div>`:''}
+    `
+    return el
+  }
+
+  function renderAll(){ renderBooks(); renderNotes(); fillFormBooks(); }
+
+  // ------- 事件绑定 -------
+  document.getElementById('q').addEventListener('input', e=>{ state.filter.q = e.target.value; updateURLHash(); renderNotes() })
+  document.getElementById('sort').addEventListener('change', e=>{ state.filter.sort = e.target.value; updateURLHash(); renderNotes() })
+  document.getElementById('group').addEventListener('change', e=>{ state.filter.group = e.target.value; updateURLHash(); renderNotes() })
+
+  document.querySelectorAll('aside [data-view]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ state.filter.view = btn.getAttribute('data-view'); renderNotes() })
+  })
+
+  // 新增摘记
+  const dlgNote = document.getElementById('dlgNote')
+  document.getElementById('btnNew').onclick = ()=>{ dlgNote.showModal(); document.getElementById('formText').focus() }
+  document.getElementById('formSubmit').onclick = (e)=>{
+    e.preventDefault()
+    const bookId = document.getElementById('formNoteBook').value
+    const text = document.getElementById('formText').value.trim()
+    const tags = document.getElementById('formTags').value.split(',').map(s=>s.trim()).filter(Boolean)
+    const createdAt = document.getElementById('formTime').value ? new Date(document.getElementById('formTime').value).toISOString() : new Date().toISOString()
+    const source = document.getElementById('formSource').value.trim()
+    if (!bookId || !text) { alert('请选择书目并填写内容'); return }
+    const note = { id: `n${Date.now()}`, bookId, text, tags, createdAt, source }
+    addPending({ notes: [note] })
+    dlgNote.close(); renderAll()
+  }
+
+  // 新增书目
+  const dlgBook = document.getElementById('dlgBook')
+  document.getElementById('btnNewBook').onclick = ()=>{ dlgBook.showModal(); document.getElementById('formBookTitle').focus() }
+  document.getElementById('formBookSubmit').onclick = (e)=>{
+    e.preventDefault()
+    const title = document.getElementById('formBookTitle').value.trim()
+    const author = document.getElementById('formBookAuthor').value.trim()
+    if (!title) { alert('请填写书名'); return }
+    const book = { id: slugId(title), title, author }
+    addPending({ books: [book] })
+    dlgBook.close(); renderAll()
+  }
+
+  function fillFormBooks(){
+    const sel = document.getElementById('formNoteBook'); sel.innerHTML = ''
+    for (const b of state.data.books.sort((a,b)=>a.title.localeCompare(b.title))) {
+      const opt = document.createElement('option'); opt.value = b.id; opt.textContent = `${b.title}${b.author? ' · '+b.author:''}`; sel.appendChild(opt)
+    }
+  }
+
+  // 导入/导出 JSON
+  document.getElementById('btnExport').onclick = ()=>{
+    const merged = getMergedJSON()
+    downloadJSON(merged, 'notes.json')
+  }
+  document.getElementById('btnImport').onclick = ()=>{
+    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'application/json'
+    inp.onchange = async ()=>{
+      const file = inp.files?.[0]; if (!file) return
+      try {
+        const txt = await file.text(); const imported = JSON.parse(txt)
+        // 覆盖到 pending（不直接覆盖服务器，只影响本地）
+        localStorage.setItem('my-excerpts-pending', JSON.stringify({
+          books: imported.books || [],
+          notes: imported.notes || []
+        }))
+        await loadData(); renderAll()
+        alert('已从文件导入到本地（LocalStorage）。如需发布，请使用“导出JSON”再上传到服务器覆盖。')
+      } catch (err) { alert('导入失败：' + err.message) }
+    }
+    inp.click()
+  }
+
+  function getMergedJSON(){
+    // 将当前内存中的数据打包导出
+    return { books: state.data.books, notes: state.data.notes }
+  }
+
+  function addPending(partial){
+    const local = localStorage.getItem('my-excerpts-pending')
+    const pending = local ? JSON.parse(local) : { books: [], notes: [] }
+    if (partial.books) pending.books = mergeById(pending.books, partial.books)
+    if (partial.notes) pending.notes = mergeById(pending.notes, partial.notes)
+    localStorage.setItem('my-excerpts-pending', JSON.stringify(pending))
+    // 同步到内存
+    if (partial.books) state.data.books = mergeById(state.data.books, partial.books)
+    if (partial.notes) state.data.notes = mergeById(state.data.notes, partial.notes)
+  }
+
+  function downloadJSON(obj, filename){
+    const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
+    setTimeout(()=>URL.revokeObjectURL(url), 500)
+  }
+
+  // URL Hash 同步：#book=...&q=...
+  function updateURLHash(){
+    const p = new URLSearchParams()
+    if (state.filter.bookId) p.set('book', state.filter.bookId)
+    if (state.filter.q) p.set('q', state.filter.q)
+    if (state.filter.sort!== 'newest') p.set('sort', state.filter.sort)
+    if (state.filter.group!== 'none') p.set('group', state.filter.group)
+    const s = p.toString(); location.hash = s ? '#' + s : ''
+  }
+  function readURLHash(){
+    const p = new URLSearchParams(location.hash.slice(1))
+    state.filter.bookId = p.get('book') || null
+    state.filter.q = p.get('q') || ''
+    state.filter.sort = p.get('sort') || 'newest'
+    state.filter.group = p.get('group') || 'none'
+    document.getElementById('q').value = state.filter.q
+    document.getElementById('sort').value = state.filter.sort
+    document.getElementById('group').value = state.filter.group
+  }
+  window.addEventListener('hashchange', ()=>{ readURLHash(); renderAll() })
+
+  // 工具
+  function slugId(s){ return 'b-' + s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') }
+  function escapeHTML(s=''){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])) }
+
+  // 启动
+  (async function(){
+    readURLHash();
+    await loadData();
+    renderAll();
+  })()
+  </script>
+</body>
+</html>
