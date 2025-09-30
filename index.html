@@ -79,11 +79,8 @@
       <div id="bookList"></div>
       <div class="divider"></div>
       <div class="section-title">数据 Data</div>
-      <div class="row">
-        <button class="btn" id="btnImport">导入JSON</button>
-        <button class="btn" id="btnExport">导出JSON</button>
-      </div>
-      <p class="muted" style="margin-top:8px">静态站点无法直接写文件：新增/编辑将存入浏览器 LocalStorage，并可“导出JSON”下载后覆盖服务器上的 <code>notes.json</code>。</p>
+      
+    
       <div class="divider"></div>
       <div class="section-title">快捷视图</div>
       <div class="row" style="flex-wrap:wrap">
@@ -115,71 +112,11 @@
       <div class="lists">
         <div class="content" id="content"></div>
       </div>
-      <div class="footer">轻量 JSON 驱动 · 可搜索 · 可按书浏览 · 时间记录 · 本地新增/导出</div>
+     
     </main>
   </div>
 
-  <!-- 新增摘记 Modal -->
-  <dialog id="dlgNote">
-    <div class="modal-head">
-      <div>新增摘记</div>
-      <button class="btn" onclick="dlgNote.close()">关闭</button>
-    </div>
-    <form class="modal-body" method="dialog">
-      <div class="grid-2">
-        <div>
-          <label>所属书目</label>
-          <select id="formNoteBook"></select>
-        </div>
-        <div>
-          <label>页码/来源 (可选)</label>
-          <input id="formSource" placeholder="如 p.123 / 章节名" />
-        </div>
-      </div>
-      <div>
-        <label>内容</label>
-        <textarea id="formText" rows="6" placeholder="粘贴你的摘记内容..."></textarea>
-      </div>
-      <div class="grid-2">
-        <div>
-          <label>标签 (逗号分隔)</label>
-          <input id="formTags" placeholder="哲学, 记忆, 方法" />
-        </div>
-        <div>
-          <label>时间 (默认现在)</label>
-          <input id="formTime" type="datetime-local" />
-        </div>
-      </div>
-      <div class="row" style="justify-content: flex-end;">
-        <button class="btn" value="cancel">取消</button>
-        <button class="btn primary" id="formSubmit" value="default">保存到本地</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- 新增书目 Modal -->
-  <dialog id="dlgBook">
-    <div class="modal-head">
-      <div>新增书目</div>
-      <button class="btn" onclick="dlgBook.close()">关闭</button>
-    </div>
-    <form class="modal-body" method="dialog">
-      <div class="grid-2">
-        <div>
-          <label>书名</label>
-          <input id="formBookTitle" placeholder="书名" />
-        </div>
-        <div>
-          <label>作者 (可选)</label>
-          <input id="formBookAuthor" placeholder="作者" />
-        </div>
-      </div>
-      <div class="row" style="justify-content: flex-end;">
-        <button class="btn" value="cancel">取消</button>
-        <button class="btn primary" id="formBookSubmit" value="default">保存</button>
-      </div>
-    </form>
-  </dialog>
+  
 
   <script>
   // =============== 轻量 JSON“数据库”结构 ===============
