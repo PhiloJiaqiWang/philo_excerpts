@@ -78,8 +78,7 @@
       <div class="section-title">书目 Books</div>
       <div id="bookList"></div>
       <div class="divider"></div>
-      <div class="section-title">数据 Data</div>
-      
+     
     
       <div class="divider"></div>
       <div class="section-title">快捷视图</div>
@@ -289,12 +288,12 @@
 
   
 
-  function fillFormBooks(){
-    const sel = document.getElementById('formNoteBook'); sel.innerHTML = ''
-    for (const b of state.data.books.sort((a,b)=>a.title.localeCompare(b.title))) {
-      const opt = document.createElement('option'); opt.value = b.id; opt.textContent = `${b.title}${b.author? ' · '+b.author:''}`; sel.appendChild(opt)
-    }
-  }
+  // function fillFormBooks(){
+  //   const sel = document.getElementById('formNoteBook'); sel.innerHTML = ''
+  //   for (const b of state.data.books.sort((a,b)=>a.title.localeCompare(b.title))) {
+  //     const opt = document.createElement('option'); opt.value = b.id; opt.textContent = `${b.title}${b.author? ' · '+b.author:''}`; sel.appendChild(opt)
+  //   }
+  // }
 
  
 
