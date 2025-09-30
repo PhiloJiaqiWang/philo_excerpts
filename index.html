@@ -285,34 +285,9 @@
     btn.addEventListener('click', ()=>{ state.filter.view = btn.getAttribute('data-view'); renderNotes() })
   })
 
-  // 新增摘记
-  const dlgNote = document.getElementById('dlgNote')
-  document.getElementById('btnNew').onclick = ()=>{ dlgNote.showModal(); document.getElementById('formText').focus() }
-  document.getElementById('formSubmit').onclick = (e)=>{
-    e.preventDefault()
-    const bookId = document.getElementById('formNoteBook').value
-    const text = document.getElementById('formText').value.trim()
-    const tags = document.getElementById('formTags').value.split(',').map(s=>s.trim()).filter(Boolean)
-    const createdAt = document.getElementById('formTime').value ? new Date(document.getElementById('formTime').value).toISOString() : new Date().toISOString()
-    const source = document.getElementById('formSource').value.trim()
-    if (!bookId || !text) { alert('请选择书目并填写内容'); return }
-    const note = { id: `n${Date.now()}`, bookId, text, tags, createdAt, source }
-    addPending({ notes: [note] })
-    dlgNote.close(); renderAll()
-  }
+  
 
-  // 新增书目
-  const dlgBook = document.getElementById('dlgBook')
-  document.getElementById('btnNewBook').onclick = ()=>{ dlgBook.showModal(); document.getElementById('formBookTitle').focus() }
-  document.getElementById('formBookSubmit').onclick = (e)=>{
-    e.preventDefault()
-    const title = document.getElementById('formBookTitle').value.trim()
-    const author = document.getElementById('formBookAuthor').value.trim()
-    if (!title) { alert('请填写书名'); return }
-    const book = { id: slugId(title), title, author }
-    addPending({ books: [book] })
-    dlgBook.close(); renderAll()
-  }
+  
 
   function fillFormBooks(){
     const sel = document.getElementById('formNoteBook'); sel.innerHTML = ''
