@@ -296,52 +296,11 @@
     }
   }
 
-  // 导入/导出 JSON
-  document.getElementById('btnExport').onclick = ()=>{
-    const merged = getMergedJSON()
-    downloadJSON(merged, 'notes.json')
-  }
-  document.getElementById('btnImport').onclick = ()=>{
-    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'application/json'
-    inp.onchange = async ()=>{
-      const file = inp.files?.[0]; if (!file) return
-      try {
-        const txt = await file.text(); const imported = JSON.parse(txt)
-        // 覆盖到 pending（不直接覆盖服务器，只影响本地）
-        localStorage.setItem('my-excerpts-pending', JSON.stringify({
-          books: imported.books || [],
-          notes: imported.notes || []
-        }))
-        await loadData(); renderAll()
-        alert('已从文件导入到本地（LocalStorage）。如需发布，请使用“导出JSON”再上传到服务器覆盖。')
-      } catch (err) { alert('导入失败：' + err.message) }
-    }
-    inp.click()
-  }
+ 
 
-  function getMergedJSON(){
-    // 将当前内存中的数据打包导出
-    return { books: state.data.books, notes: state.data.notes }
-  }
+  
 
-  function addPending(partial){
-    const local = localStorage.getItem('my-excerpts-pending')
-    const pending = local ? JSON.parse(local) : { books: [], notes: [] }
-    if (partial.books) pending.books = mergeById(pending.books, partial.books)
-    if (partial.notes) pending.notes = mergeById(pending.notes, partial.notes)
-    localStorage.setItem('my-excerpts-pending', JSON.stringify(pending))
-    // 同步到内存
-    if (partial.books) state.data.books = mergeById(state.data.books, partial.books)
-    if (partial.notes) state.data.notes = mergeById(state.data.notes, partial.notes)
-  }
-
-  function downloadJSON(obj, filename){
-    const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'})
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
-    setTimeout(()=>URL.revokeObjectURL(url), 500)
-  }
-
+ 
   // URL Hash 同步：#book=...&q=...
   function updateURLHash(){
     const p = new URLSearchParams()
