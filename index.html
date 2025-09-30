@@ -273,7 +273,7 @@
     return el
   }
 
-  function renderAll(){ renderBooks(); renderNotes(); fillFormBooks(); }
+  function renderAll(){ renderBooks(); renderNotes();  }
 
   // ------- 事件绑定 -------
   document.getElementById('q').addEventListener('input', e=>{ state.filter.q = e.target.value; updateURLHash(); renderNotes() })
