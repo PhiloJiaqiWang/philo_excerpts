@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>我的摘记 My Excerpts</title>
+  <title>摘记</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -79,11 +79,11 @@
       <div id="bookList"></div>
       <div class="divider"></div>
       <div class="section-title">数据 Data</div>
-      <div class="row">
+      <!-- <div class="row">
         <button class="btn" id="btnImport">导入JSON</button>
         <button class="btn" id="btnExport">导出JSON</button>
       </div>
-      <p class="muted" style="margin-top:8px">静态站点无法直接写文件：新增/编辑将存入浏览器 LocalStorage，并可“导出JSON”下载后覆盖服务器上的 <code>notes.json</code>。</p>
+      <p class="muted" style="margin-top:8px">静态站点无法直接写文件：新增/编辑将存入浏览器 LocalStorage，并可“导出JSON”下载后覆盖服务器上的 <code>notes.json</code>。</p> -->
       <div class="divider"></div>
       <div class="section-title">快捷视图</div>
       <div class="row" style="flex-wrap:wrap">
@@ -96,10 +96,10 @@
     <main>
       <header>
         <div class="title">📚 我的摘记 <span class="brand">My Excerpts</span></div>
-        <div class="toolbar">
+        <!-- <div class="toolbar">
           <button class="btn primary" id="btnNew">➕ 新增摘记</button>
           <button class="btn" id="btnNewBook">📘 新增书目</button>
-        </div>
+        </div> -->
       </header>
 
       <div class="searchbar">
@@ -115,10 +115,10 @@
         </select>
       </div>
 
-      <div class="lists">
+      <!-- <div class="lists">
         <div class="content" id="content"></div>
       </div>
-      <div class="footer">轻量 JSON 驱动 · 可搜索 · 可按书浏览 · 时间记录 · 本地新增/导出</div>
+      <div class="footer">轻量 JSON 驱动 · 可搜索 · 可按书浏览 · 时间记录 · 本地新增/导出</div> -->
     </main>
   </div>
 
@@ -193,15 +193,12 @@
 
   const SAMPLE_DATA = {
     books: [
-      { id: "b-orwell-1984", title: "1984", author: "George Orwell" },
-      { id: "b-saracevic-2007", title: "Relevance (Part II)", author: "Tefko Saracevic" },
-      { id: "b-nelson-1990", title: "Metamemory: A Theoretical Framework", author: "Nelson" }
+      { id: "b-orwell-1984", title: "1984", author: "George Orwell" }
+     
     ],
     notes: [
-      { id: "n1", bookId: "b-orwell-1984", text: "自由就是能够说二加二等于四的自由。", tags: ["政治", "自由"], createdAt: "2021-05-02T12:00:00Z", source: "p.84" },
-      { id: "n2", bookId: "b-saracevic-2007", text: "相关性的本质在于情境：用户、任务与时间维度共同决定。", tags: ["Information Science", "Relevance"], createdAt: "2023-11-12T09:30:00Z", source: "Section 3" },
-      { id: "n3", bookId: "b-nelson-1990", text: "Feeling of Knowing 并非正确性的保证，而是可达性的估计。", tags: ["Memory", "FoK"], createdAt: new Date().toISOString(), source: "" }
-    ]
+      { id: "n1", bookId: "b-orwell-1984", text: "自由就是能够说二加二等于四的自由。", tags: ["政治", "自由"], createdAt: "2021-05-02T12:00:00Z", source: "p.84" }
+         ]
   }
 
   // ------- 状态 -------
