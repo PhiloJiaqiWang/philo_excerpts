@@ -29,6 +29,11 @@
       "id": "5-",
       "title": "自深深处",
       "author": "王尔德"
+    },
+    {
+      "id": "6-",
+      "title": "牛虻",
+      "author": "艾捷尔·丽莲·伏尼契"
     }
   ],
   "notes": [
@@ -373,6 +378,146 @@
         ""
       ],
       "createdAt": "2025-09-05T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "61",
+      "bookId": "6-",
+      "text": "“问题在于这种制度的根本原则就不对头，不在于这个人活那个人干好还是干坏。 ”\n“什么原则？你是指教皇有权掌管俗世事务这一条？”\n“又岂止是这一条？毛病大着呢，这不过是其中的一点。那贻害无穷的一条根本原则就是：有人能掌握他人的生杀予夺之权。以这种关系来对待自己的同胞是根本错误的。 ”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "62",
+      "bookId": "6-",
+      "text": "蒙塔耐利主教大人即使本人不是个恶棍，至少也是恶棍手里的一个工具。恶棍也罢，工具也罢，对我来说那横竖是一个样——对边界那边的我那些那些朋友来说也横竖是一个样。一颗石子挡在路中，即使本意再好，也还是得一脚踢开，不踢开不行啊。让我来，太太。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "63",
+      "bookId": "6-",
+      "text": "过去属于死神，未来属于你。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "64",
+      "bookId": "6-",
+      "text": "她突然打住了，一时竟作不得声，只是怔怔地瞅着他。人的脸上痛苦之深、绝望之甚一至于此，她以前只见过一回，那就是她在来亨老家的花园门口跟蒙塔耐利立谈片刻时看到的。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "65",
+      "bookId": "6-",
+      "text": "刚才他这一阵突然的感情爆发，让她隐隐窥见了他内心世界的一角，她只觉得对他无限同情，却就是说不出一句话来。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "66",
+      "bookId": "6-",
+      "text": "“还有你的勇气也是遇危难而不折， ”琴玛轻轻插进来说。“不过你的勇气也许本来就是算在折不断的东西里的。\n ”他摇摇头。“也不见得， ”他说，“我的勇气也是后来随着我的身子一起渐渐勉强养好的；当时我的勇气垮得可惨了，就好比一只茶杯一下给砸得粉碎；说起来事情之严重也就严重在这儿。哎呀——对了，来说好了，我要给你讲讲把火棍的事。 ",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "67",
+      "bookId": "6-",
+      "text": "“那是我总是一到傍晚薄暮时分痛得最最厉害，所以每天一到下午，我总是一个人躺在那儿，看着太阳一点一点往下沉……哎，这种心情你是不会理解的！我至今看到夕阳西下心里还会惴惴不安呢！”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "68",
+      "bookId": "6-",
+      "text": "“我想请问你一件事。 ”\n“什么事？”人却纹丝不动。\n“你怎么没有自寻短见呢？”\n他抬起眼来。一脸严肃中透出了惊异。“我真没有料到你会问出这样的话来， ”他说。\n“真要那样的话，我的事业怎么办？我的事业谁来替我完成？”\n“你的事业……啊，我明白了！你刚才还谈到成了个胆小鬼什么的；依我看呀，如果你经历了这样的苦难而仍然矢志不移，那你真是我一辈子见过的最最勇敢的一个人了。 ”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "69",
+      "bookId": "6-",
+      "text": "琴玛不想让他看落日西沉，就关上了百叶窗，拉上了窗帘，自己到另一扇窗子跟前，靠着桌子坐下，重又拿起冒险来编结。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "610",
+      "bookId": "6-",
+      "text": "“他们以为凭一把刀子就可以解决人世间的一切问题，那就错了。刀子可以解决很多问题，可也不是包治一切的万应灵药。 ”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "611",
+      "bookId": "6-",
+      "text": "这是一种病态心理，只想树立一个偶像崇而敬之，只想拜倒在什么东西的跟前。至于这东西是耶稣，是佛陀，还是一颗当当树，那其实都是差不多。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "612",
+      "bookId": "6-",
+      "text": "'À la guerre comme à la guerre' 斗争就得像个斗争样。",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "612",
+      "bookId": "6-",
+      "text": "“Then am I \nA happy fly,\nIf I live\nOr if I die.”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
+      "source": ""
+    },
+    {
+      "id": "613",
+      "bookId": "6-",
+      "text": "“It desires just one thing more, though. A man who is going to die has a right to a personal fancy, and mine is that you should see why I have always been such a sulky brute to you, and so slow to forget old scores. Of course, though, you understand why, and I tell you only for the pleasure of writing the words. I loved you, Gemma, when you were an ugly little girl in a gingham frock, with a scratchy tucker and your hair in a pig-tail down your back; and I love you still. Do you remember that day when I kissed your hand, and when you so piteously begged me 'never to do that again'? It was a scoundrelly trick to play, I know; but you must forgive that; and now I kiss the paper where I have written your name. So I have kissed you twice, and both times without your consent.\n“That is all. Good-bye, my dear.”",
+      "tags": [
+        ""
+      ],
+      "createdAt": "2025-08-27T05:06:37.867Z",
       "source": ""
     }
   ]
